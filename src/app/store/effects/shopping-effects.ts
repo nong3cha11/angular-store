@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { map, mergeMap, catchError } from 'rxjs/operators';
 
-import { LoadShoppingAction, ShoppingActionTypes, LoadShoppingSuccessAction, LoadShoppingFailureAction, AddItemAction, AddItemSuccessAction, AddItemFailureAction, DeleteItemAction, DeleteItemSuccessAction, DeleteItemFailureAction } from '../actions/shopping-actions'
+import { LoadShoppingAction, ShoppingActionTypes, LoadShoppingSuccessAction, LoadShoppingFailureAction, AddItemAction, AddItemSuccessAction, AddItemFailureAction, DeleteItemAction, DeleteItemSuccessAction, DeleteItemFailureAction, EditItemAction, EditItemSuccessAction, EditItemFailureAction } from '../actions/shopping-actions';
 import { of } from 'rxjs';
 import { ShoppingService } from 'src/app/shopping.service';
 
@@ -21,7 +21,7 @@ export class ShoppingEffects {
             catchError(error => of(new LoadShoppingFailureAction(error)))
           )
       ),
-  )
+    )
 
   @Effect() addShoppingItem$ = this.actions$
     .pipe(
@@ -33,7 +33,7 @@ export class ShoppingEffects {
             catchError(error => of(new AddItemFailureAction(error)))
           )
       )
-  )
+    )
 
   @Effect() deleteShoppingItem$ = this.actions$
     .pipe(
@@ -46,6 +46,14 @@ export class ShoppingEffects {
           )
       )
     )
+
+  @Effect() editShoppingItem$ = this.actions$.pipe(
+    ofType<EditItemAction>(ShoppingActionTypes.EDIT_ITEM), mergeMap(
+      (data) => this.shoppingService.editShoppingItem(data.payload).pipe(
+        map(() => new EditItemSuccessAction(data.payload)),
+        catchError(error => of(new EditItemFailureAction(error)))
+      ))
+  )
 
   constructor(
     private actions$: Actions,

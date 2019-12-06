@@ -32,4 +32,10 @@ export class ShoppingService {
         delay(500)
       )
   }
+  editShoppingItem(shoppingItem: ShoppingItem) {
+    return this.http.put(`${this.Shoping_url}/${shoppingItem.id}`, shoppingItem)
+      .pipe(
+        delay(500)
+      )
+  }
 }

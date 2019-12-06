@@ -1,5 +1,5 @@
 import { ShoppingItem } from "../module/shopping-item-model";
-import { ShoppingActionTypes, AddItemAction, DeleteItemAction, ShoppingAction } from '../actions/shopping-actions';
+import { ShoppingActionTypes, AddItemAction, DeleteItemAction, ShoppingAction, EditItemAction } from '../actions/shopping-actions';
 
 export interface ShoppingState {
   list: ShoppingItem[],
@@ -65,6 +65,29 @@ export function ShoppingReducer(state: ShoppingState = initialState
         loading: false
       }
     case ShoppingActionTypes.DELETE_ITEM_FAILURE:
+      return {
+        ...state,
+        error: action.payload,
+        loading: false
+      };
+
+    case ShoppingActionTypes.EDIT_ITEM:
+      return {
+        ...state,
+        loading: true
+      }
+    case ShoppingActionTypes.EDIT_SUCCESS:
+      state.list.forEach(item => {
+        if(item.id == action.payload.id){
+          item.name = action.payload.name;
+        }
+      })
+      return {
+        ...state,
+        list: [...state.list],
+        loading: false
+      };
+    case ShoppingActionTypes.EDIT_FAILURE:
       return {
         ...state,
         error: action.payload,

@@ -1,4 +1,4 @@
-<div id="wrapper">
+<div id="wrapper" >
   <div [class.loading]="(loading$ | async)" id="shopping-list" *ngIf="!(error$ | async); else error">
     <div id="list">
       <h2>
@@ -6,8 +6,10 @@
       </h2>
 
       <ul *ngIf="(shoppingItems | async); else noItems">
-        <li *ngFor="let shopping of shoppingItems | async" (click)="deleteItem(shopping.id)">
+        <li *ngFor="let shopping of shoppingItems | async">
           <span>{{ shopping.name }}</span>
+          <button  (click)="edit(shopping)">Edit</button>
+          <button  (click)="deleteItem(shopping.id)">Delete</button>
         </li>
       </ul>
 
@@ -19,8 +21,12 @@
       </ng-template>
     </div>
 
-    <form (ngSubmit)="addItem()">
+    <form (ngSubmit)="addItem()" *ngIf="!editItem">
       <input type="text" [(ngModel)]="newShoppingItem.name" placeholder="Item" name="itemName" />
+      <button type="submit">+</button>
+    </form>
+    <form (ngSubmit)="update()" *ngIf="editItem">
+      <input type="text" [(ngModel)]="editShoppingItem.name" placeholder="Item" name="itemName" />
       <button type="submit">+</button>
     </form>
   </div>
