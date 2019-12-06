@@ -1,5 +1,5 @@
 
-export interface ShoppingItem{ 
-    id: number;
+export interface ShoppingItem{
+    id: string;
     name: string
 }

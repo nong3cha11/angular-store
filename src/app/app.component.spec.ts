@@ -1,12 +1,18 @@
 import { TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
+import { StoreModule } from '@ngrx/store';
+import { ShoppingReducer } from './store/reducers/shopping-reducer';
 
 describe('AppComponent', () => {
+  let component: AppComponent;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        RouterTestingModule
+        RouterTestingModule,
+        StoreModule.forRoot({
+          shopping: ShoppingReducer
+        }),
       ],
       declarations: [
         AppComponent
@@ -14,22 +20,21 @@ describe('AppComponent', () => {
     }).compileComponents();
   }));
 
-  it('should create the app', () => {
+  it('should have add item', () => {
     const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app).toBeTruthy();
+    component = fixture.componentInstance;
+    expect(component.addItem()).toBe('Success');
   });
+  // it('Check Oninit', () => {
+  //   const fixture = TestBed.createComponent(AppComponent);
+  //   component = fixture.componentInstance;
+  //   expect(component.ngOnInit).toBeTruthy();
+  // });
+  // it('Check on delete Item', () => {
+  //   const fixture = TestBed.createComponent(AppComponent);
+  //   component = fixture.componentInstance;
+  //   // spyOn(component, 'test').and.returnValue(10)
+  //   expect(component.deleteItem(5)).toBeUndefined();
+  // });
 
-  it(`should have as title 'ngrx-shopping-list'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app.title).toEqual('ngrx-shopping-list');
-  });
-
-  it('should render title in a h1 tag', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('Welcome to ngrx-shopping-list!');
-  });
 });
